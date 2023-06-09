@@ -1,5 +1,6 @@
 body {
   text-align: center;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -54,12 +55,8 @@ h1 {
   background-color: #ff6600;
 }
 
-body {
-  overflow: hidden;
-}
-
 .container {
-  width: 100%;
+  width: 90%;
   max-width: 600px;
   margin: 10px auto;
   padding: 20px;
@@ -67,7 +64,6 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 40px;
-  max-height: 92vh;
 }
 
 .background {
@@ -82,10 +78,10 @@ body {
 
 @keyframes backgroundAnimation {
   0% {
-    background-color:yellow;
+    background-color: yellow;
   }
   25% {
-    background-color:yellowgreen;
+    background-color: yellowgreen;
   }
   50% {
     background-color: orange;
@@ -98,18 +94,13 @@ body {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {
   .container {
     width: 100%;
-    max-height: none;
     margin: 0;
     border-radius: 0;
     box-shadow: none;
-  }
-
-  #hangman-canvas {
-    width: 100%;
-    height: auto;
+    padding: 10px;
   }
 
   h1 {
@@ -133,14 +124,14 @@ body {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media only screen and (min-width: 601px) and (max-width: 1200px) {
   .container {
-    width: 70%;
-    margin: 20px auto;
+    width: 80%;
+    margin: 10px auto;
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media only screen and (min-width: 1201px) {
   .container {
     width: 50%;
   }
