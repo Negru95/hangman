@@ -8,3 +8,4 @@ window.addEventListener("load", () => {
   });
   newGameBtn.classList.add("special");
   
+  
