@@ -46,19 +46,39 @@ const hangmanGame = {
       }
     },
   
-    checkWin() {
-      if (!this.word.split("").some(letter => !this.guessedLetters.includes(letter))) {
-        alert("Felicitări! Ai ghicit cuvântul.");
+checkWin() {
+  if (!this.word.split("").some(letter => !this.guessedLetters.includes(letter))) {
+    Swal.fire({
+      title: "Felicitări!",
+      text: "Ai ghicit cuvântul.",
+      icon: "success",
+      showCancelButton: false,
+      confirmButtonText: "Joc nou",
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.resetGame();
       }
-    },
-  
-    checkLoss() {
-      if (this.remainingGuesses === 0) {
-        alert("Ai pierdut. Cuvântul era: " + this.word);
+    });
+  }
+},
+
+checkLoss() {
+  if (this.remainingGuesses === 0) {
+    Swal.fire({
+      title: "Ai pierdut.",
+      text: "Cuvântul era: " + this.word,
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonText: "Joc nou",
+      allowOutsideClick: false
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.resetGame();
       }
-    },
+    });
+  }
+}
   
     updateHangman() {
       const canvas = document.getElementById("hangman-canvas");
