@@ -2,8 +2,6 @@ const hangmanGame = {
   guessedLetters: [],
   word: "",
   remainingGuesses: 6,
-  timer: null,
-  timeLeft: 30,
   hint: "",
   hintCount: 0,
 
@@ -16,7 +14,6 @@ const hangmanGame = {
     this.selectWord();
     this.updateWordDisplay();
     this.createKeyboard();
-    this.startTimer();
 
     const newGameBtn = document.getElementById("new-game-btn");
     newGameBtn.addEventListener("click", () => {
@@ -182,20 +179,6 @@ const hangmanGame = {
       });
       keyboard.appendChild(rowContainer);
     });
-  },
-
-  startTimer() {
-    this.timeLeft = 30;
-    document.getElementById("time").textContent = this.timeLeft;
-
-    this.timer = setInterval(() => {
-      this.timeLeft--;
-      document.getElementById("time").textContent = this.timeLeft;
-      if (this.timeLeft === 0) {
-        clearInterval(this.timer);
-        this.checkLoss();
-      }
-    }, 1000);
   },
 
   showHint() {
