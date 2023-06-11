@@ -55,7 +55,6 @@ const hangmanGame = {
 
   checkWin() {
     if (!this.word.split("").some((letter) => !this.guessedLetters.includes(letter))) {
-      clearInterval(this.timer);
       Swal.fire({
         title: "Felicitări!",
         text: "Ai ghicit cuvântul.",
@@ -72,8 +71,7 @@ const hangmanGame = {
   },
   
   checkLoss() {
-    if (this.remainingGuesses === 0 || this.timeLeft === 0) {
-      clearInterval(this.timer);
+    if (this.remainingGuesses === 0) {
       Swal.fire({
         title: "Ai pierdut.",
         text: "Cuvântul era: " + this.word,
@@ -152,7 +150,6 @@ const hangmanGame = {
     this.selectWord();
     this.updateWordDisplay();
     this.updateHangman();
-    this.startTimer();
     document.getElementById("hint").style.display = "none";
   },
 
