@@ -1,14 +1,16 @@
-const hangmanGame = {
-  guessedLetters: [],
-  word: "",
-  remainingGuesses: 6,
-  hint: "",
-  hintCount: 0,
+class Hangman {
+  constructor() {
+    this.guessedLetters = [];
+    this.word = "";
+    this.remainingGuesses = 6;
+    this.hint = "";
+    this.hintCount = 0;
+    this.keyboardButtons = [];
+  }
 
   selectWord() {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    this.word = words[randomIndex];
-  },
+    this.word = Words.getRandomWord();
+  }
 
   initialize() {
     this.selectWord();
@@ -25,36 +27,51 @@ const hangmanGame = {
     hintBtn.addEventListener("click", () => {
       this.showHint();
     });
-  },
+  }
 
   updateWordDisplay() {
     const wordDisplay = document.getElementById("word-display");
     let displayedWord = "";
     for (const letter of this.word) {
-      if (this.guessedLetters.includes(letter)) {
-        displayedWord += letter + " ";
+      if (this.guessedLetters.includes(letter.toUpperCase())) {
+        displayedWord += letter.toUpperCase() + " ";
       } else {
         displayedWord += "_ ";
       }
     }
     wordDisplay.textContent = displayedWord.trim();
-  },
+  }
 
-  checkLetter(letter) {
-    if (!this.guessedLetters.includes(letter)) {
-      this.guessedLetters.push(letter);
-      if (!this.word.includes(letter)) {
-        this.remainingGuesses--;
-      }
-      this.updateWordDisplay();
+checkLetter(letter) {
+  if (!this.guessedLetters.includes(letter.toUpperCase())) {
+    this.guessedLetters.push(letter.toUpperCase());
+    if (!this.word.toUpperCase().includes(letter.toUpperCase())) {
+      this.remainingGuesses--;
       this.updateHangman();
-      this.checkWin();
-      this.checkLoss();
     }
-  },
+    this.updateWordDisplay();
+    this.updateGuessedLetters();
+    this.disableLetterButton(letter);
+    this.checkWin();
+    this.checkLoss();
+  }
+}
+
+
+  updateGuessedLetters() {
+    const guessedLettersDisplay = document.getElementById("guessed-letters");
+    guessedLettersDisplay.textContent = "Litere ghicite: " + this.guessedLetters.join(", ");
+  }
+
+  disableLetterButton(letter) {
+    const button = document.getElementById(letter.toLowerCase());
+    button.disabled = true;
+    button.classList.add("disabled");
+  }
 
   checkWin() {
-    if (!this.word.split("").some((letter) => !this.guessedLetters.includes(letter))) {
+    const remainingLetters = this.word.split("").filter((letter) => !this.guessedLetters.includes(letter.toUpperCase()));
+    if (remainingLetters.length === 0) {
       Swal.fire({
         title: "Felicitări!",
         text: "Ai ghicit cuvântul.",
@@ -68,8 +85,8 @@ const hangmanGame = {
         }
       });
     }
-  },
-  
+  }
+
   checkLoss() {
     if (this.remainingGuesses === 0) {
       Swal.fire({
@@ -85,13 +102,13 @@ const hangmanGame = {
         }
       });
     }
-  },
+  }
 
   updateHangman() {
     const canvas = document.getElementById("hangman-canvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  
     const hangmanParts = [
       // Cap
       () => {
@@ -135,12 +152,13 @@ const hangmanGame = {
         ctx.stroke();
       },
     ];
-
+  
     const remainingParts = 6 - this.remainingGuesses;
     for (let i = 0; i < remainingParts; i++) {
       hangmanParts[i]();
     }
-  },
+  }
+  
 
   resetGame() {
     this.guessedLetters = [];
@@ -149,9 +167,17 @@ const hangmanGame = {
     this.hintCount = 0;
     this.selectWord();
     this.updateWordDisplay();
-    this.updateHangman();
+    this.resetKeyboard();
     document.getElementById("hint").style.display = "none";
-  },
+    this.updateHangman();
+  }
+
+  resetKeyboard() {
+    for (const button of this.keyboardButtons) {
+      button.disabled = false;
+      button.classList.remove("disabled");
+    }
+  }
 
   createKeyboard() {
     const keyboard = document.getElementById("keyboard");
@@ -169,18 +195,20 @@ const hangmanGame = {
         const button = document.createElement("button");
         button.classList.add("keyboard-letter");
         button.textContent = letter;
+        button.id = letter.toLowerCase();
         button.addEventListener("click", () => {
           this.checkLetter(letter.toLowerCase());
         });
         rowContainer.appendChild(button);
+        this.keyboardButtons.push(button);
       });
       keyboard.appendChild(rowContainer);
     });
-  },
+  }
 
   showHint() {
     if (this.hintCount < 2) {
-      const unguessedLetters = this.word.split("").filter((letter) => !this.guessedLetters.includes(letter));
+      const unguessedLetters = this.word.split("").filter((letter) => !this.guessedLetters.includes(letter.toUpperCase()));
       if (unguessedLetters.length > 0) {
         const hintIndex = Math.floor(Math.random() * unguessedLetters.length);
         this.hint = unguessedLetters[hintIndex];
@@ -189,5 +217,5 @@ const hangmanGame = {
         this.hintCount++;
       }
     }
-  },
-};
+  }
+}
