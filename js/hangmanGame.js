@@ -47,7 +47,7 @@ checkLetter(letter) {
     this.guessedLetters.push(letter.toUpperCase());
     if (!this.word.toUpperCase().includes(letter.toUpperCase())) {
       this.remainingGuesses--;
-      this.updateHangman();
+      this.updateHangman(); // Adăugată linia pentru actualizarea omulețului
     }
     this.updateWordDisplay();
     this.updateGuessedLetters();
